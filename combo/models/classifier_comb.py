@@ -106,7 +106,7 @@ class SimpleClassifierAggregator(BaseAggregator):
         all_scores = np.zeros([X.shape[0], self.n_base_estimators_])
 
         for i, clf in enumerate(self.base_estimators):
-            if clf.fitted_ != True and self.pre_fitted == False:
+            if self.pre_fitted == False:
                 ValueError('Classifier should be fitted first!')
             else:
                 if hasattr(clf, 'predict'):
@@ -124,7 +124,7 @@ class SimpleClassifierAggregator(BaseAggregator):
         if self.method == 'median':
             agg_score = median(all_scores)
 
-        return (agg_score >= self.threshold).astype('int').ravel()
+        return agg_score
 
     def predict_proba(self, X):
         """Return probability estimates for the test data X.
